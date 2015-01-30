@@ -31,7 +31,7 @@ $> kill 1222002
 
 # 2. Client side - population of admin account and setup
 
-```bash
+```
 $> ./create-admin-account-and-more-security-stuff.sh 
 ******* WARNING P4PORT IDENTIFICATION HAS CHANGED! *******
 It is possible that someone is intercepting your connection
@@ -56,4 +56,4 @@ Protections saved.
 For server 'any', configuration variable 'security' set to '3'
 ```
 
-You have t otype 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not 'paul' (most likely).
+You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not 'paul' (most likely).

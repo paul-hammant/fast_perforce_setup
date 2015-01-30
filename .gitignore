@@ -1,1 +1,4 @@
 server/db.*
+server/P4SSLDIR
+server/journal
+server/server.locks/

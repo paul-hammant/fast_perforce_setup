@@ -7,7 +7,7 @@ Setting up Perforce is going to involve two shells.  Open two and cd into 'clien
 If you've run this script once already, and want to wipe out everything on the server side, do:
 
 ```bash
-rm -rf depot journal server.locks db.* P4SSLDIR
+$> rm -rf depot journal server.locks db.* P4SSLDIR
 ```
 
 Otherwise, the first script to run is:
@@ -56,4 +56,4 @@ Protections saved.
 For server 'any', configuration variable 'security' set to '3'
 ```
 
-You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not 'paul' (most likely).
+You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not "paul" (most likely).

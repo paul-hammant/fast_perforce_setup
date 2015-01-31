@@ -1,8 +1,23 @@
 This script has been developed on a Mac. If it does not work for Linux, please raise a GitHub issue with details.
 
-Setting up Perforce is going to involve two shells.  Open two and cd into 'client' in one, and 'server' in the other.
+Setting up Perforce is going to involve two shells.  Open two and cd into 'client' in one, and 'server' in the other.  At least, after step one.
 
-# 1. Server side - initial p4d boot
+# 1. Getting the perforce binaries.
+
+There's a shell script adjacent to this README that goes and gets the latest 2015/2016 binaries for Perforce.  Both the Server (p4d) and the client (p4). It places them in /usr/bin. Lots of command live there, but many would suggest that it's not good practice to install things there yourself. 
+
+For the 64bit Mac binaries:
+
+```
+$> ./get_binaries.sh
+
+.. note the FTP traffic
+
+```
+
+For Linux or BSD, change one path element inside that with one of bin.freebsd100x86_64, bin.freebsd70x86_64 or bin.linux26x86_64.
+
+# 2. Server side - initial p4d boot
 
 If you've run this script once already, and want to wipe out everything on the server side, do:
 
@@ -19,8 +34,9 @@ Start p4d server on *localhost* for next stage
 Perforce db files in '.' will be created if missing...
 Perforce Server starting...
 ```
+## killing p4d (if you need to)
 
-At this stage a ctrl-c won't kill p4d (the perforce daemon). If you really wanted to kill it you'll have do something like:
+At this stage a ctrl-c sometimes won't kill p4d (the perforce daemon). If you really wanted to kill it you'll have do something like:
 
 ```
 $> ps aux | grep "p4d"
@@ -29,7 +45,7 @@ paul            1222002   0.0  0.0  2475160   1780 s011  S     6:58AM   0:00.02 
 $> kill 1222002
 ```
 
-# 2. Client side - population of admin account and setup
+# 3. Client side - population of admin account and setup
 
 ```
 $> ./create-admin-account-and-more-security-stuff.sh 
@@ -57,3 +73,15 @@ For server 'any', configuration variable 'security' set to '3'
 ```
 
 You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not "paul" (most likely).
+
+# 4. Relaunch the Perforce daemon in non-localhost mode
+
+Obviously the machine you're running perforce on has a DNS mapping that you'll want to connect clients to. 
+
+```
+a_proper_hostname=$(hostname)
+$> p4d -p ssl:a_proper_hostname:1666
+```
+
+P4d is a hardy little bastard - note the "killing p4d" advice above.
+

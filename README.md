@@ -79,8 +79,8 @@ You have to type 'yes' to get the client to accept the PKI fingerprint. Your key
 Obviously the machine you're running perforce on has a DNS mapping that you'll want to connect clients to. 
 
 ```
-a_proper_hostname=$(hostname)
-$> p4d -p ssl:a_proper_hostname:1666
+$> a_proper_hostname=$(hostname)
+$> p4d -p ssl:$a_proper_hostname:1666
 ```
 
 P4d is a hardy little bastard - note the "killing p4d" advice above.

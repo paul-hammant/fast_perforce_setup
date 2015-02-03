@@ -74,14 +74,30 @@ For server 'any', configuration variable 'security' set to '3'
 
 You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not "paul" (most likely).
 
-# 4. Relaunch the Perforce daemon in non-localhost mode
+#.4 Test a commit
 
-Obviously the machine you're running perforce on has a DNS mapping that you'll want to connect clients to. 
+From the client directory, it is quite easy:
+
+```
+$> cd wc/
+$> echo "hello" > foo.txt
+$> p4 add foo.txt 
+//depot/foo.txt#1 - opened for add
+$> p4 submit -d "test"
+Submitting change 1.
+Locking 1 files ...
+add //depot/foo.txt#1
+Change 1 submitted.
+```
+
+# 5. Relaunch the Perforce daemon in non-localhost mode
+
+If you've moved beyond playing around for yourself, you'll want to connect developers to the perforce server you've set up. The machine you're running perforce on has a DNS mapping that you should use instead of 'localhost'. 
 
 ```
 $> a_proper_hostname=$(hostname)
 $> p4d -p ssl:$a_proper_hostname:1666
 ```
 
-P4d is a hardy little bastard - note the "killing p4d" advice above.
+And export of P4PORT to ssl:thatDomainName:1666 might be better.
 

@@ -30,14 +30,23 @@ rm .p4_protect
 
 p4 configure set security=3
 
-mkdir working_copy
+mkdir wc
 
 p4 client -o | sed '/^#/ d' > .p4_client
 yourClient=$(cat .p4_client | grep "^Client:" | cut -f 2)
-yourWorkingCopyDirectory=$(cat .p4_client | grep "^Root:" | cut -f 2)
+yourWorkingCopyDirectory=$(cat .p4_client | grep "^Root:" | cut -f 2)/wc
 cat .p4_client | sed '/^Root:/ d' | sponge .p4_client
-echo "\n\nRoot: ${yourWorkingCopyDirectory}/wc" >>  .p4_client
+echo "\n\nRoot: ${yourWorkingCopyDirectory}" >>  .p4_client
 p4 client -i < .p4_client
 rm .p4_client
 
-echo "Your Perforce Client: ${yourClient}, and it's working copy dir: ${yourWorkingCopyDirectory}/wc"
+p4 fstat -Olhp -Dl -F ^headAction=delete & ^headAction=move/delete //depot/* //depot/myTrunk/*
+cp -r starterDepot/trunk ${yourWorkingCopyDirectory}/
+p4 add -d ${yourWorkingCopyDirectory}/trunk/hello.txt
+p4 submit -d "first commit"
+
+p4 configure set server.allowfetch=3
+p4 configure set server.allowpush=3
+p4 configure set server.allowrewrite=0
+
+echo "Your Perforce Client: ${yourClient}, and it's working copy dir: ${yourWorkingCopyDirectory}"

@@ -1,4 +1,8 @@
 server/db.*
 server/P4SSLDIR
 server/journal
-server/server.locks/
+server/server.locks/.p4config
+.p4ignore
+.svn
+.p4root
+*.swp

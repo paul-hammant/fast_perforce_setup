@@ -15,7 +15,7 @@ while ((i++)); read -r revision; do
         author="none"
     fi
     date=$(echo $revision | cut -d'|' -f 3)
-    echo "Svn Rev: ${rev},  $(echo $date | cut -d'T' -f 1)."
+    echo "Svn revision ${rev} on $(echo $date | cut -d'T' -f 1)."
     svn up --force -r $rev | sed '/^At revision/d' | sed '/^Updating /d' > svn_to_p4_up.txt
     svn log -v -r $rev > svn_to_p4_revision.txt
     grep "^   [AMR]" svn_to_p4_revision.txt | grep "[AMR] ${prefix}/trunk/" | sed "s/^[ ]*//" | sed 's/(.*)//' | sed "s/[ ]*$//" | sed "s#[AMR] ${prefix}/trunk/##" > svn_to_p4_adds_mods.txt
@@ -45,7 +45,7 @@ while ((i++)); read -r revision; do
        break
     fi
 
-    rm svn_to_p4_revision.txt svn_to_p4_deletes.txt svn_to_p4_commit_output.txt svn_to_p4_up.txt svn_to_p4_adds_mods.txt svn_to_p4_rm_output.txt 2>&1 | sed '/No such file or directory/d'
+    # rm svn_to_p4_revision.txt svn_to_p4_deletes.txt svn_to_p4_commit_output.txt svn_to_p4_up.txt svn_to_p4_adds_mods.txt svn_to_p4_rm_output.txt 2>&1 | sed '/No such file or directory/d'
     
     if [[ $(( rev % 4000 )) == 0 ]]; then
         echo "Git repack & gc"..

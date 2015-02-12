@@ -25,12 +25,8 @@ while ((i++)); read -r rev; do
     grep "^D" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} git rm -q --ignore-unmatch -r "{}"
     git commit --author "\"${author} <${author}@unsure>\"" --date "\"${date}\"" -m "\"Svn Rev: ${rev}.${messageText}\"" > svn_to_p4_commits/"${rev}".txt
 
-    echo "Svn revision ${rev} on $(echo $date | cut -d' ' -f 1,2)."
-    
-    if [[ $(( rev % 4000 )) == 0 ]]; then
-        time -p sh -c 'git repack; git gc'
-    fi 
+    echo "Svn revision ${rev} on $(echo $date | cut -d' ' -f 1,2)."    
+    if [[ $(( rev % 4000 )) == 0 ]]; then time -p sh -c 'git repack; git gc'; fi 
 done < svn_to_p4_revisions.txt
-
 time -p sh -c 'git repack; git gc'
 echo "ALL DONE WITH A GIT REPO SIZE OF $(du -h -d 0 .git | cut -f1)."

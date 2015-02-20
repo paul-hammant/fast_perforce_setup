@@ -20,16 +20,16 @@ while ((i++)); read -r rev; do
     messageText=$(cat svn_to_p4_revision.txt | awk '/^$/ {do_print=1} do_print==1 {print} NF==3 {do_print=0}' | sed '/------/d' | sed 's/\"/\\\"/g') 
 
     cat svn_to_p4_revision.txt | sed "s/^ *//" | sed 's/(.*)$//' | sed "s/ *$//" | grep "${prefix}/trunk/" | sed "s#${prefix}/trunk/##" | sponge svn_to_p4_revision.txt
-    grep "^[MR]" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f {} ] && p4 edit \"{}\" | sed '/opened for edit$/d'"
-    grep "^D" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f {} ] && p4 delete \"{}\" | sed '/opened for delete$/d'"
-    grep "^D" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -d {} ] && p4 delete \"{}/...\" | sed '/opened for delete$/d'"
+    grep "^[MR]" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f \"{}\" ] && p4 edit \"{}\" | sed '/opened for edit$/d'"
+    grep "^D" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f \"{}\" ] && p4 delete \"{}\" | sed '/opened for delete$/d'"
+    grep "^D" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -d \"{}\" ] && p4 delete \"{}/...\" | sed '/opened for delete$/d'"
 
     svn up --force -r $rev | sed '/^At revision/d' | sed '/^Updating /d' | sed '/^[AUD]  /d' | sed '/^ U/d' | sed '/^Updated to/d' | sed '/^Restored /d'
 
-    grep "^A" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f {} ] && p4 add \"{}\" | sed '/opened for add$/d'"
-    grep "^A" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -d {} ] && p4 add \"{}/...\" | sed '/opened for add$/d'"
+    grep "^A" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -f \"{}\" ] && p4 add \"{}\" | sed '/opened for add$/d'"
+    grep "^A" svn_to_p4_revision.txt | cut -d' ' -f 2-99 | xargs -I {} sh -c "[ -d \"{}\" ] && p4 add \"{}/...\" | sed '/opened for add$/d' | sed '/no such file(s)./d'"
 
-    #if [ "$rev" == "11" ]; then break; fi
+    if [ "$rev" == "366" ]; then break; fi
 
 
     p4 submit -d "Svn Rev: ${rev}.${messageText}" > svn_to_p4_commits/"${rev}".txt 2>&1

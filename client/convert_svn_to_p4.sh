@@ -30,7 +30,7 @@ export -f p4_del_file
 export -f p4_del_dir
 export -f p4_edit_file
 
-if  [ ! -d .p4root ]; then echo "no .p4root folder - do 'p4 init'"; exit 10; fi
+# if  [ ! -d .p4root ]; then echo "no .p4root folder - do 'p4 init'"; exit 10; fi
 if  [ ! -d .svn ]; then echo "no .svn folder - checkout the trunk of some subversion repo"; exit 10; fi
 [ ! -d svn_to_p4_commits ] && mkdir svn_to_p4_commits
 # p4 edit .p4ignore 

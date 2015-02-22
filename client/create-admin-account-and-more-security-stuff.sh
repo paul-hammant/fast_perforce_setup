@@ -41,8 +41,9 @@ p4 client -i < .p4_client
 rm .p4_client
 
 p4 fstat -Olhp -Dl -F ^headAction=delete & ^headAction=move/delete //depot/* //depot/myTrunk/*
-cp -r starterDepot/trunk ${yourWorkingCopyDirectory}/
-p4 add -d ${yourWorkingCopyDirectory}/trunk/hello.txt
+mkdir ${yourWorkingCopyDirectory}/trunk
+echo "hello" > ${yourWorkingCopyDirectory}/trunk/initial_perforce_file_that_can_be_deleted_later.txt
+p4 add -d ${yourWorkingCopyDirectory}/trunk/initial_perforce_file_that_can_be_deleted_later.txt
 p4 submit -d "first commit"
 
 p4 configure set server.allowfetch=3

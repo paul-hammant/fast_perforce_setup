@@ -25,18 +25,44 @@ If you've run this script once already, and want to wipe out everything on the s
 $> rm -rf depot journal server.locks db.* P4SSLDIR
 ```
 
-Otherwise, the first script to run is:
+Otherwise, the first script to run is the one to make PKI keys for the Perforce server:
 
 ```
-$> ./initialize_perforce_server.sh
+$> ./make_perforce_server_ssl_keys.sh
 Generate SSL keys into P4SSLDIR/ directory using p4d
 Start p4d server on *localhost* for next stage
 Perforce db files in '.' will be created if missing...
 Perforce Server starting...
 ```
+
+Second is launching the Perforce daemon on localhost:
+
+```
+$> ./run_perforce_server_localhost.sh
+Start p4d server on *localhost* for next stage
+Perforce db files in '.' will be created if missing...
+Perforce Server starting...
+```
+
+Or the the bound domain name for your machine:
+
+```
+$> ./run_perforce_server_hostname.sh
+Start p4d server on <yourHostName> for next stage
+Perforce db files in '.' will be created if missing...
+Perforce Server starting...
+```
+
 ## killing p4d (if you need to)
 
-At this stage a ctrl-c sometimes won't kill p4d (the perforce daemon). If you really wanted to kill it you'll have do something like:
+The correct way to halt the Perforce daemon, if ctrl-c does not work, is one of:
+
+```
+p4 -u operator admin stop
+p4 -u super admin stop
+```
+
+If that is not working, you can kill p4d by doing something like the following:
 
 ```
 $> ps aux | grep "p4d"
@@ -74,30 +100,22 @@ For server 'any', configuration variable 'security' set to '3'
 
 You have to type 'yes' to get the client to accept the PKI fingerprint. Your key will be different to mine, and you're not "paul" (most likely).
 
+This has made you a working copy in a 'wc' directory, and a 'trunk' within that.
+
 #.4 Test a commit
 
 From the client directory, it is quite easy:
 
 ```
-$> cd wc/
-$> echo "hello" > foo.txt
-$> p4 add foo.txt 
-//depot/foo.txt#1 - opened for add
+$> cd wc/trunk/
+$> echo "hello world" > initial_perforce_file_that_can_be_deleted_later.txt
+$> p4 add initial_perforce_file_that_can_be_deleted_later.txt 
+//depot/trunk/initial_perforce_file_that_can_be_deleted_later.txt#1 - opened for add
 $> p4 submit -d "test"
 Submitting change 1.
 Locking 1 files ...
-add //depot/foo.txt#1
+add //depot/trunk/initial_perforce_file_that_can_be_deleted_later.txt#1
 Change 1 submitted.
 ```
 
-# 5. Relaunch the Perforce daemon in non-localhost mode
-
-If you've moved beyond playing around for yourself, you'll want to connect developers to the perforce server you've set up. The machine you're running perforce on has a DNS mapping that you should use instead of 'localhost'. 
-
-```
-$> a_proper_hostname=$(hostname)
-$> p4d -p ssl:$a_proper_hostname:1666
-```
-
-And export of P4PORT to ssl:thatDomainName:1666 might be better.
 

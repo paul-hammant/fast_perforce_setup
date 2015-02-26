@@ -116,7 +116,7 @@ You have to type 'yes' to get the client to accept the PKI fingerprint. Your key
 
 This has made you a working copy in a 'wc' directory, and a 'trunk' within that.
 
-#.4 Test a commit
+## Testing a commit
 
 From the client directory, it is quite easy:
 
@@ -131,5 +131,3 @@ Locking 1 files ...
 add //depot/trunk/initial_perforce_file_that_can_be_deleted_later.txt#1
 Change 1 submitted.
 ```
-
-

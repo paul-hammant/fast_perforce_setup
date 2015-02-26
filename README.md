@@ -1,6 +1,9 @@
 This script has been developed on a Mac. If it does not work for Linux, please raise a GitHub issue with details.
 
-Setting up Perforce is going to involve two shells.  Open two and cd into 'client' in one, and 'server' in the other.  At least, after step one.
+Three things going on here:
+1. Getting the essential Perforce binaries and putting them in the path.
+2. Setting up a perforce server and using it from a client (involves two shells)
+3. Copying subversion history into perforce (not really covered in this readme, see the accompanying blog entry TODO)
 
 # 1. Getting the perforce binaries.
 
@@ -9,7 +12,7 @@ There's a shell script adjacent to this README that goes and gets the latest 201
 For the 64bit Mac binaries:
 
 ```
-$> ./get_binaries.sh
+$> path/to/get_binaries.sh
 
 .. note the FTP traffic
 
@@ -17,7 +20,13 @@ $> ./get_binaries.sh
 
 For Linux or BSD, change one path element inside that with one of bin.freebsd100x86_64, bin.freebsd70x86_64 or bin.linux26x86_64.
 
+This will put p4 and p4d in /usr/bin 
+
+There are homebrew installs for Perforce server and client, but they're not up to date.
+
 # 2. Server side - initial p4d boot
+
+Perhaps do this in a fresh directory - /Users/you/p4Server/
 
 If you've run this script once already, and want to wipe out everything on the server side, do:
 
@@ -28,7 +37,7 @@ $> rm -rf depot journal server.locks db.* P4SSLDIR
 Otherwise, the first script to run is the one to make PKI keys for the Perforce server:
 
 ```
-$> ./make_perforce_server_ssl_keys.sh
+$> path/to/make_perforce_server_ssl_keys.sh
 Generate SSL keys into P4SSLDIR/ directory using p4d
 Start p4d server on *localhost* for next stage
 Perforce db files in '.' will be created if missing...
@@ -38,7 +47,7 @@ Perforce Server starting...
 Second is launching the Perforce daemon on localhost:
 
 ```
-$> ./run_perforce_server_localhost.sh
+$> path/to/run_perforce_server_localhost.sh
 Start p4d server on *localhost* for next stage
 Perforce db files in '.' will be created if missing...
 Perforce Server starting...
@@ -47,7 +56,7 @@ Perforce Server starting...
 Or the the bound domain name for your machine:
 
 ```
-$> ./run_perforce_server_hostname.sh
+$> path/to/run_perforce_server_hostname.sh
 Start p4d server on <yourHostName> for next stage
 Perforce db files in '.' will be created if missing...
 Perforce Server starting...
@@ -73,8 +82,10 @@ $> kill 1222002
 
 # 3. Client side - population of admin account and setup
 
+Again, perhaps in a fresh directory /Users/you/p4Client/
+
 ```
-$> ./create-admin-account-and-more-security-stuff.sh 
+$> path/to/create-admin-account-and-more-security-stuff.sh 
 ******* WARNING P4PORT IDENTIFICATION HAS CHANGED! *******
 It is possible that someone is intercepting your connection
 to the Perforce P4PORT '127.0.0.1:1666'

@@ -1,9 +1,12 @@
 This script has been developed on a Mac. If it does not work for Linux, please raise a GitHub issue with details.
 
 Three things going on here:
-1. Getting the essential Perforce binaries and putting them in the path.
-2. Setting up a perforce server and using it from a client (involves two shells)
-3. Copying subversion history into perforce (not really covered in this readme, see the accompanying blog entry TODO)
+
+1.  Getting the essential Perforce binaries and putting them in the path.
+2.  Setting up a perforce server and 
+3.  Using it from a perforce client
+
+There's a bonus about copying subversion history into perforce, but it is not really covered in this readme, see the accompanying blog entry: TODO.
 
 # 1. Getting the perforce binaries.
 

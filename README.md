@@ -27,7 +27,7 @@ This will put p4 and p4d in /usr/bin
 
 There are homebrew installs for Perforce server and client, but they're not up to date.
 
-# 2. Server side - initial p4d boot
+# 2. Server side - launching the Perforce daemon 'p4d'
 
 Perhaps do this in a fresh directory - /Users/you/p4Server/
 
@@ -56,7 +56,7 @@ Perforce db files in '.' will be created if missing...
 Perforce Server starting...
 ```
 
-Or the the bound domain name for your machine:
+Or, if you prefer, bound to your machine's hostname:
 
 ```
 $> path/to/run_perforce_server_hostname.sh
@@ -67,9 +67,10 @@ Perforce Server starting...
 
 ## killing p4d (if you need to)
 
-The correct way to halt the Perforce daemon, if ctrl-c does not work, is one of:
+The correct way to halt the Perforce daemon (running as a background process via the above):
 
 ```
+export P4PORT=ssl:localhost:1666
 p4 -u operator admin stop
 p4 -u super admin stop
 ```
@@ -82,6 +83,7 @@ paul            1222019   0.0  0.0  2450180    668 s010  S+    6:59AM   0:00.01 
 paul            1222002   0.0  0.0  2475160   1780 s011  S     6:58AM   0:00.02 p4d -p ssl:localhost:1666
 $> kill 1222002
 ```
+or run the scipt stop_perforce_server.sh that is in the same directory
 
 # 3. Client side - population of admin account and setup
 

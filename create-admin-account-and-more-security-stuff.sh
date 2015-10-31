@@ -4,11 +4,11 @@ export P4PORT=ssl:localhost:1666
 
 set -e
 
-p4 trust -f
+pass=qwer1234
+
+p4 trust -f -y
 
 you=$(p4 user -o | grep "^User:" | cut -f 2)
-
-echo "Your perforce username: $you"
 
 p4 user -o | sed '/^#/ d' > .p4_user
 more .p4_user
@@ -18,11 +18,11 @@ rm .p4_user
 echo "Set initial password (you'll have to do it twice)."
 echo "EIGHT or more chars ((upper case or lower case) and digits)."
 
-p4 passwd 
+echo "$pass\n$pass" | p4 passwd
 
 echo "Use that password to log this shell into Perforce"
 
-p4 -u $you login
+echo "$pass" | p4 -u $you login
 
 p4 client -o 2>&1 | sed '/^#/ d' > .p4_client
 p4 client -i < .p4_client
@@ -61,3 +61,5 @@ p4 configure set server.allowpush=3
 p4 configure set server.allowrewrite=0
 
 echo "Your Perforce Client: ${yourClient}, and it's working copy dir: ${yourWorkingCopyDirectory}"
+echo "Your perforce username: $you"
+echo "Your perforce password: $pass"

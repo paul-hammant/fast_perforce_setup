@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash
 
 export P4PORT=ssl:localhost:1666
 
@@ -18,7 +18,7 @@ rm .p4_user
 echo "Set initial password (you'll have to do it twice)."
 echo "EIGHT or more chars ((upper case or lower case) and digits)."
 
-echo "$pass\n$pass" | p4 passwd
+echo -e "$pass\n$pass" | p4 passwd
 
 echo "Use that password to log this shell into Perforce"
 
@@ -46,7 +46,7 @@ echo "Your Perforce client name: $yourClient"
 yourWorkingCopyDirectory=$(cat .p4_client | grep "^Root:" | cut -f 2)/wc
 echo "Your working copy directory: $yourWorkingCopyDirectory"
 cat .p4_client | sed '/^Root:/ d' | sponge .p4_client
-echo "\n\nRoot: ${yourWorkingCopyDirectory}" >>  .p4_client
+echo -e "\n\nRoot: ${yourWorkingCopyDirectory}" >>  .p4_client
 p4 client -i < .p4_client
 rm .p4_client
 

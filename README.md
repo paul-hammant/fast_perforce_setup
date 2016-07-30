@@ -3,29 +3,22 @@ This script has been developed on a Mac. If it does not work for Linux, please r
 Three things going on here:
 
 1.  Getting the essential Perforce binaries and putting them in the path.
-2.  Setting up a perforce server and 
+2.  Setting up a perforce server and
 3.  Using it from a perforce client
 
 There's a bonus about copying subversion history into perforce, but it is not really covered in this readme, see the accompanying blog entry: TODO.
 
 # 1. Getting the perforce binaries.
 
-There's a shell script adjacent to this README that goes and gets the latest 2015/2016 binaries for Perforce.  Both the Server (p4d) and the client (p4). It places them in /usr/bin. Lots of command live there, but many would suggest that it's not good practice to install things there yourself. 
-
-For the 64bit Mac binaries:
+For Mac, the client comes via homebrew-cask, but the server doesn't have a recipe yet:
 
 ```
-$> path/to/get_binaries.sh
-
-.. note the FTP traffic
-
+$> brew cask install p4
+$> curl -sS ftp://ftp.perforce.com/perforce/r16.1/bin.darwin90x86_64/p4d > /usr/local/p4d
+$> chmod +x /usr/local/p4d
 ```
 
-For Linux or BSD, change one path element inside that with one of bin.freebsd100x86_64, bin.freebsd70x86_64 or bin.linux26x86_64.
-
-This will put p4 and p4d in /usr/bin 
-
-There are homebrew installs for Perforce server and client, but they're not up to date.
+For Linux or BSD, poke around the ftp.perforce.com/perforce folder.
 
 # 2. Server side - launching the Perforce daemon 'p4d'
 
@@ -90,7 +83,7 @@ or run the scipt stop_perforce_server.sh that is in the same directory
 Again, perhaps in a fresh directory /Users/you/p4Client/
 
 ```
-$> path/to/create-admin-account-and-more-security-stuff.sh 
+$> path/to/create-admin-account-and-more-security-stuff.sh
 ******* WARNING P4PORT IDENTIFICATION HAS CHANGED! *******
 It is possible that someone is intercepting your connection
 to the Perforce P4PORT '127.0.0.1:1666'
@@ -103,11 +96,11 @@ Added trust for P4PORT 'ssl:localhost:1666' (127.0.0.1:1666)
 Your perforce username: paul
 User paul not changed.
 Set initial password (you'll have to do it twice). Eight or more chars ((upper case or lower case) and digits)
-Enter new password: 
-Re-enter new password: 
+Enter new password:
+Re-enter new password:
 Password updated.
 Use that password to log this shell into Perforce
-Enter password: 
+Enter password:
 User paul logged in.
 Client pauls-mba.local saved.
 Protections saved.
@@ -125,7 +118,7 @@ From the client directory, it is quite easy:
 ```
 $> cd wc/trunk/
 $> echo "hello world" > initial_perforce_file_that_can_be_deleted_later.txt
-$> p4 add initial_perforce_file_that_can_be_deleted_later.txt 
+$> p4 add initial_perforce_file_that_can_be_deleted_later.txt
 //depot/trunk/initial_perforce_file_that_can_be_deleted_later.txt#1 - opened for add
 $> p4 submit -d "test"
 Submitting change 1.

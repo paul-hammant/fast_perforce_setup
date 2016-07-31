@@ -14,7 +14,7 @@ For Mac, the client comes via homebrew-cask, but the server doesn't have a recip
 
 ```
 $> brew cask install p4
-$> curl -sS ftp://ftp.perforce.com/perforce/r16.1/bin.darwin90x86_64/p4d > /usr/local/p4d
+$> curl -sS ftp://ftp.perforce.com/perforce/r16.1/bin.darwin90x86_64/p4d > /usr/local/bin/p4d
 $> chmod +x /usr/local/p4d
 ```
 

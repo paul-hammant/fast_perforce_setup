@@ -13,12 +13,45 @@ There's a bonus about copying subversion history into perforce, but it is not re
 For Mac, the client comes via homebrew-cask, but the server doesn't have a recipe yet:
 
 ```
-$> brew cask install p4
-$> curl -sS ftp://ftp.perforce.com/perforce/r16.1/bin.darwin90x86_64/p4d > /usr/local/bin/p4d
+$> brew install --cask p4
+$> curl -sS https://ftp.perforce.com/perforce/r24.2/bin.macosx12u_arm64/p4d > /usr/local/bin/p4d
 $> chmod +x /usr/local/bin/p4d
 ```
 
-For Linux or BSD, poke around the ftp.perforce.com/perforce folder.
+For Intel Macs, swap `bin.macosx12u_arm64` for `bin.macosx12u_x86_64` in the URL above.
+
+## Linux
+
+On Debian / Ubuntu, Perforce ships an APT repository with both the `p4` client and the `p4d` server:
+
+```
+$> curl -fsSL https://package.perforce.com/perforce.pubkey | sudo gpg --dearmor -o /usr/share/keyrings/perforce.gpg
+$> echo "deb [signed-by=/usr/share/keyrings/perforce.gpg] https://package.perforce.com/apt/ubuntu noble release" | sudo tee /etc/apt/sources.list.d/perforce.list
+$> sudo apt update
+$> sudo apt install helix-cli helix-p4d
+```
+
+Substitute `noble` for the codename matching your distro — currently Perforce publishes `bionic`, `focal`, `jammy`, and `noble` (check https://package.perforce.com/apt/ubuntu/dists/ for the live list). If you're on a release newer than the latest published LTS (e.g. Ubuntu 25.10 "questing"), pinning to `noble` works fine — the binaries are self-contained.
+
+The package installs `p4` to `/usr/bin/p4` and `p4d` to `/usr/sbin/p4d`. `/usr/sbin` isn't always on a non-root user's PATH, so if `which p4d` comes up empty, either add it to PATH or invoke `p4d` by full path. The package also enables a `p4dctl.service` systemd unit for managing server instances — the scripts in this repo run `p4d` directly as your user instead, so you can ignore `p4dctl` and skip the `configure-p4d.sh` step the package suggests.
+
+On RHEL / Rocky / Fedora:
+
+```
+$> sudo rpm --import https://package.perforce.com/perforce.pubkey
+$> sudo tee /etc/yum.repos.d/perforce.repo <<'EOF'
+[perforce]
+name=Perforce
+baseurl=https://package.perforce.com/yum/rhel/9/x86_64
+enabled=1
+gpgcheck=1
+EOF
+$> sudo dnf install helix-cli helix-p4d
+```
+
+(Adjust the `9` to `7` or `8` to match your RHEL major version.)
+
+If you'd rather grab the raw binaries (e.g. for BSD, Alpine, or an air-gapped box), they live under https://ftp.perforce.com/perforce/ — pick the latest release directory and the `bin.linux26x86_64/` (or matching arch) folder, then drop `p4` and `p4d` into `/usr/local/bin` and `chmod +x` them.
 
 # 2. Server side - launching the Perforce daemon 'p4d'
 
